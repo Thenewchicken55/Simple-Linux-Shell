@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
 
     while (exitFlag)
     {
+        bool runInBackground = false;
+
         printPrompt();
         /* Read the command line and parse it */
         readCommand(cmdLine);
@@ -82,6 +84,8 @@ int main(int argc, char *argv[])
             if (strcasecmp(command.name, exitCommand) == 0) {
                 exitFlag = false;
                 break;
+            } else if(strcasecmp(command.name, "s") == 0) {
+                runInBackground = true;
             }
 
         }
@@ -105,8 +109,10 @@ int main(int argc, char *argv[])
             }
             exit(0);
         }
-        /* Wait for the child to terminate */
-        waitpid(pid, &status, 0);
+        if (!runInBackground) {
+            /* Wait for the child to terminate */
+            waitpid(pid, &status, 0);
+        }
     }
 
     /* Shell termination */
