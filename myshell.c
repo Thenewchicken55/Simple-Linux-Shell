@@ -167,6 +167,7 @@ struct command_t translateCommand(struct command_t *cmd) {
         // Echo; display comment on screen followed by a new line (multiple
         // spaces/tabs may be reduced to a single space); if no argument simply
         // issue a new prompt
+        translatedCommand.name = "echo";
     } else if (strcasecmp(cmd->name, "l") == 0) {
         // List the contents of the current directory; see below
     } else {
