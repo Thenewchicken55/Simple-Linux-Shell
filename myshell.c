@@ -58,7 +58,7 @@ struct command_t
 int parseCommand(char *, struct command_t *);
 void printPrompt();
 void readCommand(char *);
-char *translateCommand(char *cmd);
+struct command_t translateCommand(struct command_t *cmd);
 
 int main(int argc, char *argv[])
 {
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         if (command.name && exitCommand) {
             // if the command is q then exit the shell
             if (strcasecmp(command.name, exitCommand) == 0) {
-                exitFlag = true;
+                exitFlag = false;
                 break;
             }
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
            either execute it directly or build a new command structure to
            execute next
         */
-        command.name = translateCommand(command.name);
+        command = translateCommand(&command);
 
         /* Create a child process to execute the command */
         if ((pid = fork()) == 0)
@@ -103,6 +103,7 @@ int main(int argc, char *argv[])
                 printf("There was an error with the command you entered: %s\n", command.name);
                 exit(1);
             }
+            exit(0);
         }
         /* Wait for the child to terminate */
         waitpid(pid, &status, 0);
@@ -113,20 +114,43 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-char *translateCommand(char *cmd) {
-    if (strcasecmp(cmd, "h") == 0) {
-        return "help";
-    } else if (strcasecmp(cmd, "d") == 0) {
-        return "date";
-    } else if (strcasecmp(cmd, "t") == 0) {
-        return "time";
-    } else if (strcasecmp(cmd, "c") == 0) {
-        return "clear";
-    } else if (strcasecmp(cmd, "q") == 0) {
-        return "quit";
+struct command_t translateCommand(struct command_t *cmd) {
+    struct command_t translatedCommand = *cmd;
+    if (strcasecmp(cmd->name, "c") == 0) {
+        // copy file1 file2
+        translatedCommand.name = "cp";
+    } else if (strcasecmp(cmd->name, "d") == 0) {
+        // Delete the named file
+        translatedCommand.name = "rm";
+    } else if (strcasecmp(cmd->name, "h") == 0) {
+        // Help; display the user manual, described below
+    } else if (strcasecmp(cmd->name, "m") == 0) {
+        // Make; create the named text file by launching a text editor
+        translatedCommand.name = "nano";
+    } else if (strcasecmp(cmd->name, "p") == 0) {
+        // Print; display the contents of the named file on screen.
+        translatedCommand.name = "more";
+    } else if (strcasecmp(cmd->name, "s") == 0) {
+        // Surf the web by launching a browser as a background process
+        translatedCommand.name = "firefox";
+    } else if (strcasecmp(cmd->name, "w") == 0) {
+        // Wipe; clear the screen.
+        translatedCommand.name = "clear";
+    } else if (strcasecmp(cmd->name, "x") == 0) {
+        // Execute the named program.
+        translatedCommand.name = cmd->argv[1];
+        translatedCommand.argv[0] = cmd->argv[1];
+        translatedCommand.argv[1] = cmd->argv[2];
+    } else if (strcasecmp(cmd->name, "e") == 0) {
+        // Echo; display comment on screen followed by a new line (multiple
+        // spaces/tabs may be reduced to a single space); if no argument simply
+        // issue a new prompt
+    } else if (strcasecmp(cmd->name, "l") == 0) {
+        // List the contents of the current directory; see below
     } else {
-        return cmd;
+        return *cmd;
     }
+    return translatedCommand;
 }
 
 /* End basic shell */
