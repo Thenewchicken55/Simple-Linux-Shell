@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
         if ((pid = fork()) == 0)
         {
             /* Child executing command */
-            if (execvp(command.name, command.argv) == -1)
+            if (execvp(command.name, command.argv) == -1 && command.name != NULL)
             {
                 printf("There was an error with the command you entered: %s\n", command.name);
                 exit(1);
@@ -130,6 +130,19 @@ struct command_t translateCommand(struct command_t *cmd) {
         translatedCommand.name = "rm";
     } else if (strcasecmp(cmd->name, "h") == 0) {
         // Help; display the user manual, described below
+        translatedCommand.name = NULL;
+        printf("This is a basic shell that can execute the following commands:\n");
+        printf("c - copy file1 file2\n");
+        printf("d - delete the named file\n");
+        printf("h - help; display the user manual\n");
+        printf("m - make; create the named text file by launching a text editor\n");
+        printf("p - print; display the contents of the named file on screen\n");
+        printf("s - surf the web by launching a browser as a background process\n");
+        printf("w - wipe; clear the screen\n");
+        printf("x - execute the named program\n");
+        printf("e - echo; display comment on screen followed by a new line\n");
+        printf("l - list the contents of the current directory\n");
+        printf("q - quit the shell\n");
     } else if (strcasecmp(cmd->name, "m") == 0) {
         // Make; create the named text file by launching a text editor
         translatedCommand.name = "nano";
