@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 #define MAX_ARGS 64
 #define MAX_ARG_LEN 16
