@@ -170,6 +170,19 @@ struct command_t translateCommand(struct command_t *cmd) {
         translatedCommand.name = "echo";
     } else if (strcasecmp(cmd->name, "l") == 0) {
         // List the contents of the current directory; see below
+        printf("\n");
+        int pid;
+        if(pid = fork() == 0) {
+            translatedCommand.name = "pwd";
+            translatedCommand.argv[1] = NULL;
+            execvp(translatedCommand.name, translatedCommand.argv);
+            exit(0);
+        }
+        waitpid(pid, NULL, 0);
+        printf("\n");
+        translatedCommand.name = "ls";
+        translatedCommand.argv[1] = "-l";
+        translatedCommand.argv[2] = NULL;
     } else {
         return *cmd;
     }
