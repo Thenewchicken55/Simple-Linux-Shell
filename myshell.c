@@ -58,7 +58,7 @@ struct command_t
 int parseCommand(char *, struct command_t *);
 void printPrompt();
 void readCommand(char *);
-// char *translateCommand(char *cmd);
+char *translateCommand(char *cmd);
 
 int main(int argc, char *argv[])
 {
@@ -111,21 +111,21 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// char *translateCommand(char *cmd) {
-//     if (strcmp(cmd, "h") == 0) {
-//         return "help";
-//     } else if (strcmp(cmd, "d") == 0) {
-//         return "date";
-//     } else if (strcmp(cmd, "t") == 0) {
-//         return "time";
-//     } else if (strcmp(cmd, "c") == 0) {
-//         return "clear";
-//     } else if (strcmp(cmd, "q") == 0) {
-//         return "quit";
-//     } else {
-//         return cmd;
-//     }
-// }
+char *translateCommand(char *cmd) {
+    if (strcmp(cmd, "h") == 0) {
+        return "help";
+    } else if (strcmp(cmd, "d") == 0) {
+        return "date";
+    } else if (strcmp(cmd, "t") == 0) {
+        return "time";
+    } else if (strcmp(cmd, "c") == 0) {
+        return "clear";
+    } else if (strcmp(cmd, "q") == 0) {
+        return "quit";
+    } else {
+        return cmd;
+    }
+}
 
 /* End basic shell */
 
