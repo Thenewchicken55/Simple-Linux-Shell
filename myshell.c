@@ -97,8 +97,7 @@ int main(int argc, char *argv[])
         if ((pid = fork()) == 0)
         {
             /* Child executing command */
-            int error = execvp(command.name, command.argv);
-            if (error == -1)
+            if (execvp(command.name, command.argv) == -1)
             {
                 printf("There was an error with the command you entered: %s\n", command.name);
             }
