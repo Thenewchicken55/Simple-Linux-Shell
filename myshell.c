@@ -132,17 +132,20 @@ struct command_t translateCommand(struct command_t *cmd) {
         // Help; display the user manual, described below
         translatedCommand.name = NULL;
         printf("This is a basic shell that can execute the following commands:\n");
-        printf("c - copy file1 file2\n");
-        printf("d - delete the named file\n");
         printf("h - help; display the user manual\n");
-        printf("m - make; create the named text file by launching a text editor\n");
-        printf("p - print; display the contents of the named file on screen\n");
-        printf("s - surf the web by launching a browser as a background process\n");
-        printf("w - wipe; clear the screen\n");
-        printf("x - execute the named program\n");
-        printf("e - echo; display comment on screen followed by a new line\n");
+        printf("c - copy file1 file2\n");
+        printf("d - delete a file (takes one argument -- filename)\n");
+        printf("m - create the a text file by launching a text editor (takes one argument -- filename)\n");
+        printf("p - display the contents of the named file on screen (takes one argument -- filename)\n");
+        printf("s - launch firefox\n");
+        printf("w - clear the console\n");
+        printf("x - execute a program (takes one argument -- program filename)\n");
+        printf("e - display a comment on screen followed by a new line (takes any number of arguments -- the comment that will be echoed)\n");
         printf("l - list the contents of the current directory\n");
         printf("q - quit the shell\n");
+        printf("To execute a command, type the command letter followed by the arguments\n");
+        printf("For example, to copy a file, type 'c file1 file2'\n");
+        printf("Another example, to execute a program, type 'x programName'\n");
     } else if (strcasecmp(cmd->name, "m") == 0) {
         // Make; create the named text file by launching a text editor
         translatedCommand.name = "nano";
