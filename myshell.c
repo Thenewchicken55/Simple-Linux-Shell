@@ -90,19 +90,15 @@ int main(int argc, char *argv[])
 
         }
 
-
-        /*
-           TODO: if the command is one of the shortcuts you're testing for
-           either execute it directly or build a new command structure to
-           execute next
-        */
         command = translateCommand(&command);
 
         /* Create a child process to execute the command */
         if ((pid = fork()) == 0)
         {
             /* Child executing command */
-            if (execvp(command.name, command.argv) == -1 && command.name != NULL)
+            // Check if the command gives an error.
+            // Implementation detail: The only way command.name is NULL is if the command is 'h' in which case, no need to execute
+            if (command.name != NULL && execvp(command.name, command.argv) == -1 )
             {
                 printf("There was an error with the command you entered: %s\n", command.name);
                 exit(1);
