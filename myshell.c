@@ -92,6 +92,7 @@ int main(int argc, char *argv[])
            either execute it directly or build a new command structure to
            execute next
         */
+        command.name = translateCommand(command.name);
 
         /* Create a child process to execute the command */
         if ((pid = fork()) == 0)
@@ -113,15 +114,15 @@ int main(int argc, char *argv[])
 }
 
 char *translateCommand(char *cmd) {
-    if (strcmp(cmd, "h") == 0) {
+    if (strcasecmp(cmd, "h") == 0) {
         return "help";
-    } else if (strcmp(cmd, "d") == 0) {
+    } else if (strcasecmp(cmd, "d") == 0) {
         return "date";
-    } else if (strcmp(cmd, "t") == 0) {
+    } else if (strcasecmp(cmd, "t") == 0) {
         return "time";
-    } else if (strcmp(cmd, "c") == 0) {
+    } else if (strcasecmp(cmd, "c") == 0) {
         return "clear";
-    } else if (strcmp(cmd, "q") == 0) {
+    } else if (strcasecmp(cmd, "q") == 0) {
         return "quit";
     } else {
         return cmd;
