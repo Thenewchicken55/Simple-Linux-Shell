@@ -68,9 +68,9 @@ int main(int argc, char *argv[])
     struct command_t command;
     char *exitCommand = "q";
 
-    bool exitFlag = false;
+    bool exitFlag = true;
 
-    while (1)
+    while (exitFlag)
     {
         printPrompt();
         /* Read the command line and parse it */
@@ -78,7 +78,8 @@ int main(int argc, char *argv[])
         parseCommand(cmdLine, &command);
         command.argv[command.argc] = NULL;
         if (command.name && exitCommand) {
-            if (strcmp(command.name, exitCommand) == 0) {
+            // if the command is q then exit the shell
+            if (strcasecmp(command.name, exitCommand) == 0) {
                 exitFlag = true;
                 break;
             }
