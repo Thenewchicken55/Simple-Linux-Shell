@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
             if (execvp(command.name, command.argv) == -1)
             {
                 printf("There was an error with the command you entered: %s\n", command.name);
+                exit(1);
             }
         }
         /* Wait for the child to terminate */
