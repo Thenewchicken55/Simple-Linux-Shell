@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
 
     while (exitFlag)
     {
+        // reset the flag for running in the background
+        // Flag is limited to the while loop scope for simplicity
         bool runInBackground = false;
 
         printPrompt();
@@ -82,9 +84,13 @@ int main(int argc, char *argv[])
         if (command.name && exitCommand) {
             // if the command is Q then exit the shell
             if (strcmp(command.name, exitCommand) == 0) {
+                // There was trouble exiting the shell, so I'm using a flag to exit the loop
                 exitFlag = false;
+                // break should also exit the loop, but I'm using a flag to be safe
                 break;
-            } else if(strcmp(command.name, "s") == 0) {
+            }
+            // if the command is S then run the command in the background,
+            else if(strcmp(command.name, "S") == 0) {
                 runInBackground = true;
             }
 
@@ -105,6 +111,8 @@ int main(int argc, char *argv[])
             }
             exit(0);
         }
+
+        // if the process is supposed to run in the background, then don't wait for it to finish
         if (!runInBackground) {
             /* Wait for the child to terminate */
             waitpid(pid, &status, 0);
@@ -265,7 +273,7 @@ void printPrompt()
     /* Build the prompt string to have the machine name,
      * current directory, or other desired information
      */
-    char *promptString = "linux(ea152)|>"; /* EDIT THIS LINE */
+    char *promptString = "linux(ea152)|>";
     printf("%s ", promptString);
 }
 
