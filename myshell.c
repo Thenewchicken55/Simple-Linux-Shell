@@ -192,8 +192,11 @@ struct command_t translateCommand(struct command_t *cmd) {
         // issue a new prompt
         translatedCommand.name = "echo";
     } else if (strcmp(cmd->name, "L") == 0) {
-        // List the contents of the current directory; see below
+        // List the contents of the current directory;
+        // new line is printed after the command is executed
         printf("\n");
+
+        // execute the pwd command as a child process
         int pid;
         if(pid = fork() == 0) {
             translatedCommand.name = "pwd";
@@ -201,12 +204,19 @@ struct command_t translateCommand(struct command_t *cmd) {
             execvp(translatedCommand.name, translatedCommand.argv);
             exit(0);
         }
+
+        // wait for pwd to finish
         waitpid(pid, NULL, 0);
+        // new line is printed after the command is executed
         printf("\n");
+
+        // pass ls -l as the command to execute afterwards
         translatedCommand.name = "ls";
         translatedCommand.argv[1] = "-l";
         translatedCommand.argv[2] = NULL;
     } else {
+        // if the command isn't any one of these shortcut commands, then pass
+        // it as is and run it as a linux command
         return *cmd;
     }
     return translatedCommand;
