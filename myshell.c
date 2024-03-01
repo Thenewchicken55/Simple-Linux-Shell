@@ -140,6 +140,7 @@ struct command_t translateCommand(struct command_t *cmd) {
         translatedCommand.name = "rm";
     } else if (strcmp(cmd->name, "H") == 0) {
         // Help; display the user manual, described below
+        // Implementation detail, if the command name is NULL, it won't execute in the child process
         translatedCommand.name = NULL;
         printf("Welcome to the Shell Manual. This manual provides guidance on using the custom shell with various internal commands.\n");
         printf("This is a basic shell that can execute the following commands:\n");
@@ -175,9 +176,15 @@ struct command_t translateCommand(struct command_t *cmd) {
         translatedCommand.name = "clear";
     } else if (strcmp(cmd->name, "X") == 0) {
         // Execute the named program.
+        // execute the argv[1] program as a command
         translatedCommand.name = cmd->argv[1];
+        // shift argv elements to the left by 1
         translatedCommand.argv[0] = cmd->argv[1];
         translatedCommand.argv[1] = cmd->argv[2];
+        // just in case these extra argv elements are used,
+        translatedCommand.argv[2] = cmd->argv[3];
+        translatedCommand.argv[3] = cmd->argv[4];
+        translatedCommand.argv[4] = cmd->argv[5];
     } else if (strcmp(cmd->name, "E") == 0) {
         // Echo; display comment on screen followed by a new line (multiple
         // spaces/tabs may be reduced to a single space); if no argument simply
