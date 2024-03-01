@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     int status;
     char cmdLine[MAX_LINE_LEN];
     struct command_t command;
-    char *exitCommand = "q";
+    char *exitCommand = "Q";
 
     bool exitFlag = true;
 
@@ -80,11 +80,11 @@ int main(int argc, char *argv[])
         parseCommand(cmdLine, &command);
         command.argv[command.argc] = NULL;
         if (command.name && exitCommand) {
-            // if the command is q then exit the shell
-            if (strcasecmp(command.name, exitCommand) == 0) {
+            // if the command is Q then exit the shell
+            if (strcmp(command.name, exitCommand) == 0) {
                 exitFlag = false;
                 break;
-            } else if(strcasecmp(command.name, "s") == 0) {
+            } else if(strcmp(command.name, "s") == 0) {
                 runInBackground = true;
             }
 
@@ -116,55 +116,74 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/**
+ * Translates a custom shell command shortcut into a corresponding Linux command.
+ *
+ * This function takes a command_t struct as input, which represents a custom shell command,
+ * and translates it into a corresponding Linux command. The function modifies the name and
+ * arguments of the command to match the corresponding Linux command based on predefined set
+ * of custom commands that can be listed if you run H command.
+ *
+ * If the custom command is not recognized, the function returns the original command
+ * without any modifications which will run as a Linux command.
+ *
+ * @param cmd A pointer to a command_t struct representing the custom command or Linux command.
+ * @return A command_t struct representing the translated Linux command.
+ */
 struct command_t translateCommand(struct command_t *cmd) {
     struct command_t translatedCommand = *cmd;
-    if (strcasecmp(cmd->name, "c") == 0) {
+    if (strcmp(cmd->name, "C") == 0) {
         // copy file1 file2
         translatedCommand.name = "cp";
-    } else if (strcasecmp(cmd->name, "d") == 0) {
+    } else if (strcmp(cmd->name, "D") == 0) {
         // Delete the named file
         translatedCommand.name = "rm";
-    } else if (strcasecmp(cmd->name, "h") == 0) {
+    } else if (strcmp(cmd->name, "H") == 0) {
         // Help; display the user manual, described below
         translatedCommand.name = NULL;
+        printf("Welcome to the Shell Manual. This manual provides guidance on using the custom shell with various internal commands.\n");
         printf("This is a basic shell that can execute the following commands:\n");
-        printf("h - help; display the user manual\n");
-        printf("c - copy file1 file2\n");
-        printf("d - delete a file (takes one argument -- filename)\n");
-        printf("m - create the a text file by launching a text editor (takes one argument -- filename)\n");
-        printf("p - display the contents of the named file on screen (takes one argument -- filename)\n");
-        printf("s - launch firefox\n");
-        printf("w - clear the console\n");
-        printf("x - execute a program (takes one argument -- program filename)\n");
-        printf("e - display a comment on screen followed by a new line (takes any number of arguments -- the comment that will be echoed)\n");
-        printf("l - list the contents of the current directory\n");
-        printf("q - quit the shell\n");
+        printf("H - help; display the user manual\n");
+        printf("C - copy file1 file2\n");
+        printf("D - delete a file (takes one argument -- filename)\n");
+        printf("M - create the a text file by launching a text editor (takes one argument -- filename)\n");
+        printf("P - display the contents of the named file on screen (takes one argument -- filename)\n");
+        printf("S - launch firefox\n");
+        printf("W - clear the console\n");
+        printf("X - execute a program (takes one argument -- program filename)\n");
+        printf("E - display a comment on screen followed by a new line (takes any number of arguments -- the comment that will be echoed)\n");
+        printf("L - list the contents of the current directory\n");
+        printf("Q - quit the shell\n");
         printf("To execute a command, type the command letter followed by the arguments\n");
-        printf("For example, to copy a file, type 'c file1 file2'\n");
-        printf("Another example, to execute a program, type 'x programName'\n");
-    } else if (strcasecmp(cmd->name, "m") == 0) {
+        printf("For example, to copy a file, type 'C file1 file2'\n");
+        printf("Another example, to execute a program, type 'X programName'\n");
+        printf("Additional Notes\n");
+        printf("Commands are case-sensitive.\n");
+        printf("File paths should be provided relative to the current directory\n");
+        printf("Other linux commands are also accepted, for example you may type in \"ls -1\" or \"man\" \n");
+    } else if (strcmp(cmd->name, "M") == 0) {
         // Make; create the named text file by launching a text editor
         translatedCommand.name = "nano";
-    } else if (strcasecmp(cmd->name, "p") == 0) {
+    } else if (strcmp(cmd->name, "P") == 0) {
         // Print; display the contents of the named file on screen.
         translatedCommand.name = "more";
-    } else if (strcasecmp(cmd->name, "s") == 0) {
+    } else if (strcmp(cmd->name, "S") == 0) {
         // Surf the web by launching a browser as a background process
         translatedCommand.name = "firefox";
-    } else if (strcasecmp(cmd->name, "w") == 0) {
+    } else if (strcmp(cmd->name, "W") == 0) {
         // Wipe; clear the screen.
         translatedCommand.name = "clear";
-    } else if (strcasecmp(cmd->name, "x") == 0) {
+    } else if (strcmp(cmd->name, "X") == 0) {
         // Execute the named program.
         translatedCommand.name = cmd->argv[1];
         translatedCommand.argv[0] = cmd->argv[1];
         translatedCommand.argv[1] = cmd->argv[2];
-    } else if (strcasecmp(cmd->name, "e") == 0) {
+    } else if (strcmp(cmd->name, "E") == 0) {
         // Echo; display comment on screen followed by a new line (multiple
         // spaces/tabs may be reduced to a single space); if no argument simply
         // issue a new prompt
         translatedCommand.name = "echo";
-    } else if (strcasecmp(cmd->name, "l") == 0) {
+    } else if (strcmp(cmd->name, "L") == 0) {
         // List the contents of the current directory; see below
         printf("\n");
         int pid;
