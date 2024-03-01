@@ -153,14 +153,14 @@ struct command_t translateCommand(struct command_t *cmd) {
         printf("Welcome to the Shell Manual. This manual provides guidance on using the custom shell with various internal commands.\n");
         printf("\nThis is a basic shell that can execute the following commands:\n");
         printf("\tH - help; display the user manual\n");
-        printf("\tC - copy file1 file2\n");
+        printf("\tC - copy file1 file2 (takes two arguments -- filenames)\n");
         printf("\tD - delete a file (takes one argument -- filename)\n");
         printf("\tM - create the a text file by launching a text editor (takes one argument -- filename)\n");
         printf("\tP - display the contents of the named file on screen (takes one argument -- filename)\n");
         printf("\tS - launch firefox\n");
         printf("\tW - clear the console\n");
         printf("\tX - execute a program (takes one argument -- program filename)\n");
-        printf("\tE - display a comment on screen followed by a new line (takes any number of arguments -- the comment that will be echoed)\n");
+        printf("\tE - display a comment on screen (takes any number of arguments -- the comment that will be echoed)\n");
         printf("\tL - list the contents of the current directory\n");
         printf("\tQ - quit the shell\n");
         printf("\nTo execute a command, type the command letter followed by the arguments\n");
