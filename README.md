@@ -59,5 +59,6 @@ this will run the shell program in the shell. You can keep doing this endlessly 
 - Commands are case-sensitive.
 - File paths should be provided relative to the current directory
 - Other linux commands are also accepted, for example you may type in \"ls -1\" or \"man\"
+- No outside resources were used to complete this project
 
 
